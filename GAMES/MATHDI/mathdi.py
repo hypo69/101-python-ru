@@ -25,7 +25,52 @@ MATHDI:
     2.8 Если ответ пользователя не равен правильному результату, то вывести сообщение "INCORRECT. TRY AGAIN.".
 3.  Конец игры.
 -----------------
-
+Блок-схема:
+```mermaid
+flowchart TD
+    Start["Начало"] --> InitializeVariables["<p align='left'>Инициализация переменных:
+    <code><b>
+    isGameOver = False
+    </b></code></p>"]
+    InitializeVariables --> LoopStart{"Начало цикла: пока <code><b>!isGameOver</b></code>"}
+    LoopStart -- Да --> GenerateNumbers["<p align='left'>Генерация случайных чисел:
+    <code><b>
+    number1 = random(1, 10)
+    number2 = random(1, 10)
+    </b></code></p>"]
+    GenerateNumbers --> SelectOperation["<p align='left'>Выбор случайной операции:
+    <code><b>operation = random choice ['+', '-', '*', '/']</b></code></p>"]
+    SelectOperation --> CreateExpression["<p align='left'>Формирование выражения:
+    <code><b>expression = f'{number1} {operation} {number2}'</b></code></p>"]
+    CreateExpression --> OutputExpression["Вывод выражения: <code><b>print(expression)</b></code>"]
+    OutputExpression --> InputAnswer["Ввод ответа пользователем: <code><b>userAnswer</b></code>"]
+    InputAnswer --> CalculateResult["<p align='left'>Вычисление правильного результата:
+    <code><b>correctResult = eval(expression)</b></code></p>"]
+    CalculateResult --> CheckAnswer{"Проверка: <code><b>userAnswer == correctResult?</b></code>"}
+    CheckAnswer -- Да --> OutputCorrect["Вывод сообщения: <b>CORRECT</b>"]
+    OutputCorrect --> SetGameOver["<code><b>isGameOver = True</b></code>"]
+    SetGameOver --> LoopEnd
+    CheckAnswer -- Нет --> OutputIncorrect["Вывод сообщения: <b>INCORRECT. TRY AGAIN.</b>"]
+    OutputIncorrect --> LoopStart
+    LoopStart -- Нет --> LoopEnd["Конец цикла: <code><b>isGameOver == True</b></code>"]
+    LoopEnd --> End["Конец"]
+```
+**Legenda**:
+    Start - Начало программы.
+    InitializeVariables - Инициализация переменной isGameOver в значение False.
+    LoopStart - Начало цикла, который продолжается, пока isGameOver не станет True.
+    GenerateNumbers - Генерация двух случайных целых чисел number1 и number2 в диапазоне от 1 до 10.
+    SelectOperation - Выбор случайной математической операции (сложение, вычитание, умножение, деление).
+    CreateExpression - Формирование математического выражения в виде строки из сгенерированных чисел и операции.
+    OutputExpression - Вывод сформированного математического выражения для пользователя.
+    InputAnswer - Получение ответа от пользователя и преобразование его в число.
+    CalculateResult - Вычисление правильного результата выражения с помощью функции eval().
+    CheckAnswer - Проверка, равен ли ответ пользователя правильному результату.
+    OutputCorrect - Вывод сообщения "CORRECT", если ответ правильный.
+    SetGameOver - Установка переменной isGameOver в True для завершения цикла.
+    OutputIncorrect - Вывод сообщения "INCORRECT. TRY AGAIN.", если ответ неправильный.
+    LoopEnd - Конец цикла, когда isGameOver становится True.
+    End - Конец программы.
 """
 import random
 
@@ -69,3 +114,34 @@ while not isGameOver:
     else:
         print("INCORRECT. TRY AGAIN.")
 
+
+"""
+Объяснение кода:
+1.  **Импорт модуля `random`**:
+    -   `import random`: Импортирует модуль `random`, который используется для генерации случайных чисел и выбора случайной операции.
+2. **Инициализация переменной**
+   - `isGameOver = False`: Инициализируется флаг isGameOver как False. Этот флаг будет использоваться для контроля цикла игры.
+3.  **Основной цикл игры `while not isGameOver:`**:
+    -   Этот цикл выполняется, пока флаг `isGameOver` остается `False`. Как только ответ пользователя будет правильным, флаг будет установлен в `True`, и цикл завершится.
+4.  **Генерация случайных чисел и операции**:
+    -   `number1 = random.randint(1, 10)`: Генерирует случайное целое число от 1 до 10 и сохраняет его в `number1`.
+    -   `number2 = random.randint(1, 10)`: Генерирует случайное целое число от 1 до 10 и сохраняет его в `number2`.
+    -   `operations = ["+", "-", "*", "/"]`: Создает список допустимых математических операций.
+    -   `operation = random.choice(operations)`: Выбирает случайную операцию из списка и сохраняет её в `operation`.
+5.  **Формирование выражения**:
+    -   `expression = f"{number1} {operation} {number2}"`: Формирует строку, представляющую математическое выражение, используя f-строку для вставки значений чисел и операции.
+6.  **Вывод выражения пользователю**:
+    -   `print(f"Решите: {expression} = ?")`: Выводит на экран математическое выражение для решения пользователем.
+7.  **Получение ответа от пользователя**:
+    -   `try...except ValueError`: Обрабатывает возможную ошибку ввода, если пользователь введет не число.
+    -   `userAnswer = float(input("Ваш ответ: "))`: Запрашивает у пользователя ответ, преобразуя ввод в число с плавающей точкой (для возможности ввода не целых чисел).
+8.  **Вычисление правильного ответа**:
+      -  `try...except ZeroDivisionError`: Обрабатывает возможную ошибку деления на ноль
+      -   `correctResult = eval(expression)`: Вычисляет правильный результат, используя функцию eval(). Она выполняет вычисление выражения, которое хранится в виде строки.
+9.  **Проверка ответа пользователя**:
+    -   `if userAnswer == correctResult:`: Проверяет, является ли введенный ответ пользователя правильным.
+    -   `print("CORRECT")`: Выводит сообщение о правильном ответе.
+    -   `isGameOver = True`: Устанавливает флаг `isGameOver` в `True`, что приводит к завершению основного цикла игры.
+    -   `else:`: Если ответ неправильный.
+    -   `print("INCORRECT. TRY AGAIN.")`: Выводит сообщение о неправильном ответе и предлагает попробовать снова.
+"""

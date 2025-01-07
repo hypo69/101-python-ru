@@ -1,6 +1,6 @@
 ## \file /src/ai/openai/model/training (23).py
 # -*- coding: utf-8 -*-
-#! venv/Scripts/python.exe
+
 #! venv/bin/python/python3.12
 
 """

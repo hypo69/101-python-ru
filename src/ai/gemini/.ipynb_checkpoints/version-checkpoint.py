@@ -1,6 +1,6 @@
 ## \file /src/ai/gemini/.ipynb_checkpoints/version-checkpoint.py
 # -*- coding: utf-8 -*-
-#! venv/Scripts/python.exe
+
 #! venv/bin/python/python3.12
 
 """

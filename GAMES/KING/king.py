@@ -28,7 +28,40 @@ KING:
 6. Вывести сообщение о победе предыдущего игрока.
 7. Конец игры.
 -----------------
-
+Блок-схема:
+```mermaid
+flowchart TD
+    Start["Начало"] --> InputFirstWord["Ввод первого слова от игрока 1"]
+    InputFirstWord --> SetCurrentPlayer["<code><b>currentPlayer = 2</b></code>"]
+    SetCurrentPlayer --> GameLoopStart{"Начало цикла игры"}
+    GameLoopStart -- "Да" --> InputWord["Ввод слова от <code><b>currentPlayer</b></code>"]
+    InputWord --> CheckQuit{"Проверка: <code><b>word == '0'?</b></code>"}
+    CheckQuit -- Да --> GameOver["Конец игры"]
+    CheckQuit -- Нет --> CheckFirstLetter{"Проверка: <code><b>firstLetter(word) == lastLetter(previousWord)?</b></code>"}
+    CheckFirstLetter -- Нет --> OutputError["Вывод ошибки: <b>INCORRECT WORD</b>"]
+    OutputError --> GameLoopStart
+    CheckFirstLetter -- Да --> UpdatePreviousWord["<code><b>previousWord = word</b></code>"]
+    UpdatePreviousWord --> SwitchPlayer["<code><b>currentPlayer = 3 - currentPlayer</b></code>"]
+     SwitchPlayer --> GameLoopStart
+    GameLoopStart -- "Нет" --> OutputEndMessage["Вывод: <b>GAME OVER</b>"]
+    OutputEndMessage --> OutputWinner["Вывод победителя: <b>Player {3 - currentPlayer} WINS!</b>"]
+    OutputWinner --> End["Конец"]
+```
+Legenda:
+    Start - Начало программы.
+    InputFirstWord - Запрос ввода первого слова от игрока 1.
+    SetCurrentPlayer - Установка текущего игрока в 2.
+    GameLoopStart - Начало основного игрового цикла.
+    InputWord - Запрос ввода слова от текущего игрока.
+    CheckQuit - Проверка, введено ли слово '0' для завершения игры.
+    GameOver - Завершение игры.
+    CheckFirstLetter - Проверка, совпадает ли первая буква введенного слова с последней буквой предыдущего слова.
+    OutputError - Вывод сообщения об ошибке, если слово неверное.
+    UpdatePreviousWord - Обновление предыдущего слова текущим словом.
+    SwitchPlayer - Переключение текущего игрока.
+    OutputEndMessage - Вывод сообщения о завершении игры.
+    OutputWinner - Вывод победителя игры.
+    End - Конец программы.
 """
 
 # Инициализация начальных переменных
@@ -59,3 +92,28 @@ while True:
 
 print(f"Игрок {3 - currentPlayer} победил!")
 
+"""
+Объяснение кода:
+1. **Инициализация переменных**:
+   -  `previousWord = ""`: Переменная для хранения последнего введенного слова. Изначально пустая строка.
+   -  `currentPlayer = 1`: Переменная для хранения номера текущего игрока. Начинаем с игрока 1.
+2. **Запрос первого слова**:
+   -  `previousWord = input("Игрок 1, введите первое слово: ").strip()`: Запрашивает у игрока 1 ввод первого слова и сохраняет его в `previousWord`, обрезая пробелы в начале и конце.
+   -  `currentPlayer = 2`: Переключает текущего игрока на игрока 2.
+3. **Основной игровой цикл**:
+    -  `while True:`: Начинается бесконечный цикл, который продолжается до тех пор, пока один из игроков не введет '0'.
+    - `currentWord = input(f"Игрок {currentPlayer}, введите слово: ").strip()`: Запрашивает у текущего игрока ввод слова, сохраняя его в `currentWord`, обрезая пробелы в начале и конце.
+   -  **Проверка выхода**:
+      -  `if currentWord == '0':`: Проверяет, ввел ли игрок '0'. Если да, то игра завершается.
+      - `print("Игра окончена.")`: Выводит сообщение об окончании игры.
+      -  `break`: Завершает цикл.
+   - **Проверка первой буквы**:
+      -   `if previousWord and currentWord[0].lower() != previousWord[-1].lower():`: Проверяет, совпадает ли первая буква текущего слова с последней буквой предыдущего слова (без учета регистра).
+      -   `print("Неверное слово, первая буква должна совпадать с последней буквой предыдущего слова.")`: Выводит сообщение об ошибке, если проверка не прошла.
+      -   `continue`: Переходит к следующей итерации цикла.
+   -   **Подготовка к следующему ходу**:
+      - `previousWord = currentWord`: Обновляет `previousWord` текущим словом.
+      - `currentPlayer = 3 - currentPlayer`: Переключает текущего игрока (если был игрок 1, то станет игрок 2, и наоборот).
+4. **Объявление победителя**:
+    - `print(f"Игрок {3 - currentPlayer} победил!")`: Выводит сообщение о победе предыдущего игрока (так как переключение на следующего игрока уже произошло).
+"""
