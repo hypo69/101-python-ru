@@ -26,42 +26,7 @@ MNOPLY:
         4.1.4 Вывести на экран текущую позицию и капитал игрока.
 5. После всех раундов определить и вывести победителя.
 -----------------
-Блок-схема:
-```mermaid
-flowchart TD
-    Start["Начало"] --> Initialize["<p align='left'>Инициализация:
-    <code><b>player1Money = 1500<br>player2Money = 1500<br>boardValues = [...]<br>numberOfRounds = 10</b></code></p>"]
-    Initialize --> RoundLoopStart{"Начало цикла: для каждого раунда"}
-    RoundLoopStart -- Да --> PlayerLoopStart{"Начало цикла: для каждого игрока"}
-    PlayerLoopStart -- Да --> RollDice["Бросок кубика: <code><b>diceRoll = random(1, 6)</b></code>"]
-    RollDice --> MovePlayer["Перемещение игрока: <code><b>currentPlayerPosition = (currentPlayerPosition + diceRoll) % 24</b></code>"]
-    MovePlayer --> UpdateMoney["Обновление денег игрока: <code><b>currentPlayerMoney = currentPlayerMoney + boardValues[currentPlayerPosition]</b></code>"]
-    UpdateMoney --> DisplayStatus["Вывод позиции и денег игрока"]
-    DisplayStatus --> PlayerLoopEnd{"Конец цикла: для каждого игрока"}
-    PlayerLoopEnd -- Да --> PlayerLoopStart
-    PlayerLoopEnd -- Нет --> RoundLoopEnd{"Конец цикла: для каждого раунда"}
-    RoundLoopEnd -- Да --> RoundLoopStart
-    RoundLoopEnd -- Нет --> DetermineWinner["Определение победителя"]
-    DetermineWinner --> OutputWinner["Вывод победителя"]
-    OutputWinner --> End["Конец"]
-    PlayerLoopStart -- Нет --> RoundLoopEnd
 
-```
-
-Legenda:
-    Start - Начало программы.
-    Initialize - Инициализация начальных значений: начальные деньги игроков (player1Money, player2Money), стоимости ячеек игрового поля (boardValues) и количество раундов (numberOfRounds).
-    RoundLoopStart - Начало цикла, который повторяется для каждого раунда игры.
-    PlayerLoopStart - Начало цикла, который повторяется для каждого игрока в текущем раунде.
-    RollDice - Бросок кубика, результат которого является случайным числом от 1 до 6 (diceRoll).
-    MovePlayer - Перемещение текущего игрока по игровому полю на diceRoll позиций, с учетом циклического поля (24 ячейки).
-    UpdateMoney - Обновление количества денег текущего игрока в соответствии со стоимостью ячейки, на которой он остановился.
-    DisplayStatus - Вывод текущей позиции и количества денег текущего игрока.
-    PlayerLoopEnd - Конец цикла для каждого игрока.
-    RoundLoopEnd - Конец цикла для каждого раунда.
-    DetermineWinner - Определение победителя после завершения всех раундов.
-    OutputWinner - Вывод имени победителя игры.
-    End - Конец программы.
 """
 import random
 
@@ -112,35 +77,3 @@ else:
     print(f"Ничья, у обоих игроков {player1Money} денег")
 
 
-"""
-Объяснение кода:
-
-1.  **Инициализация переменных**:
-    -   `player1Money = 1500`: Устанавливает начальный капитал первого игрока.
-    -   `player2Money = 1500`: Устанавливает начальный капитал второго игрока.
-    -   `boardValues`:  Список, представляющий стоимости ячеек игрового поля (положительные или отрицательные).
-    -   `numberOfRounds = 10`: Устанавливает общее количество раундов игры.
-     -   `player1Position = 0`: Начальная позиция первого игрока.
-    -   `player2Position = 0`: Начальная позиция второго игрока.
-
-2.  **Основной цикл игры**:
-    -   `for roundNumber in range(1, numberOfRounds + 1):`: Цикл, который проходит по каждому раунду игры.
-        -   Вывод номера текущего раунда.
-    -   `for player in range(1, 3):`: Цикл, который проходит по каждому игроку в каждом раунде.
-        -   Вывод информации о текущем игроке.
-        -   `diceRoll = random.randint(1, 6)`: Генерирует случайное число (результат броска кубика).
-        -   Вывод результата броска кубика.
-       -  **Перемещение игрока**:
-          - `if player == 1:`: Проверка текущего игрока.
-          - `player1Position = (player1Position + diceRoll) % 24`: Вычисляет новую позицию первого игрока, учитывая цикличность игрового поля.
-          -  `currentPosition = player1Position`: Текущая позиция первого игрока.
-          -  `player1Money += boardValues[currentPosition]`: Обновляет капитал первого игрока, добавляя или вычитая стоимость ячейки.
-          - `currentMoney = player1Money`: Текущая сумма денег первого игрока
-          - `else:`: Действия для второго игрока аналогичны, с использованием соответствующих переменных.
-        -   `print(f"   Позиция: {currentPosition + 1}, Деньги: {currentMoney}")`: Вывод текущей позиции игрока и его капитала.
-
-3.  **Определение победителя**:
-    -  `print("\nИгра окончена!")`: Выводит сообщение о завершении игры.
-    -   `if player1Money > player2Money:`: Сравнение капиталов игроков для определения победителя.
-        -   Вывод информации о победителе или ничьей.
-"""
